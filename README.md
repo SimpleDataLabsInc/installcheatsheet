@@ -2,7 +2,7 @@ This document lists down commands to bring up Prophecy setup quickly. We highly 
 
 ### Setup ProService(ucp) using Helm
 #### Deploy TLS secrets for ingress
-We shall be using DNS Zones hosted in Prophecy landscape for setup.
+We shall be using DNS Zones hosted in Prophecy landscape for setup. `ucp-tls-secret` is passed to ingress for TLS conn.
 * Create TLS secrets
 ```shell
 openssl req -x509 -sha256 -newkey rsa:4096 -keyout ca.key -out ca.crt -days 356 -nodes -subj ‘/CN=My Cert Authority’
@@ -37,7 +37,7 @@ GRANT ALL PRIVILEGES ON DATABASE airflow TO sdl;
 We need to create a `values.yaml` file to pass to helm during to pass during `helm install`.
 ```yaml
 ucp:
-  hostname: foo.cloud.prophecy.io
+  hostname: <ingress FQDN edit here> #This should be added to the DNS zone to point to the loadbalancer endpoint.
   certSecretName: ucp-tls-secret
 
 env:
