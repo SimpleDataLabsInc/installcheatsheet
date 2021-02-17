@@ -138,14 +138,14 @@ proctl [<customer>] » platform get --cluster <cluster-name>
 ### Control Plane
 Control Plane represents one installation of Prophecy Application. Please run below command to create a prophecy control plane on a given k8s cluster. 
 ```
-proctl [<customer>] » controlplane create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url>
+proctl [<customer>] » tenant create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url>
 ```
 This command prompts for a password `<controlplane-password>`. This is a long operation and one can track the status of operation with 'controlplane get' command.
 Once the deployment status is shown as Deployed, the control plane is said to be deployed successfully.
 
 Creating a control plane is a long operation and one can track the status of operation with 'controlplane get' command. Please use below command to check the status of control plane creation:
 ```
-proctl [<customer>] » controlplane get -t <controlplane-name>
+proctl [<customer>] » tenant get -t <controlplane-name>
 ```
 *Controlplane creation takes around 10 minutes to complete.*
 
