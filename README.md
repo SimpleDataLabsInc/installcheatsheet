@@ -125,7 +125,7 @@ proctl [<customer>] » cluster get aws -n <cluster-name>
 Prophecy Platform is responsible for backup,restore,logs, metrics and auto-scaling for prophecy setup. Please run below command to create prophecy platform on a given k8s cluster.  
 
 ```
-proctl [<customer>] » platform create -n <platform-name> --cluster <cluster-name> --version <platform-version>
+proctl [<customer>] » platform create -n <platform-name> --cluster <cluster-name> --version 0.0.2
 ```
 Creating a platform is a long operation and one can track the status of operation with 'platform get' command. Please use below command to check the status of platform creation:
 
@@ -138,7 +138,7 @@ proctl [<customer>] » platform get --cluster <cluster-name>
 ### Control Plane
 Control Plane represents one installation of Prophecy Application. Please run below command to create a prophecy control plane on a given k8s cluster. 
 ```
-proctl [<customer>] » tenant create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url>
+proctl [<customer>] » tenant create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url> --version 0.4.1-alpha2
 ```
 This command prompts for a password `<controlplane-password>`. This is a long operation and one can track the status of operation with 'controlplane get' command.
 Once the deployment status is shown as Deployed, the control plane is said to be deployed successfully.
@@ -154,10 +154,10 @@ proctl [<customer>] » tenant get -t <controlplane-name>
 Data Plane represent an execution environment such as test or production. Please run below command to create a prophecy data plane on a given k8s cluster for a given control plane.
 ```
 Databricks
-proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider databricks --db-org-id <databricks-org-id> --db-token <databricks-token> --db-url <databricks-url> --postgres-url <postgres-url>
+proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider databricks --db-org-id <databricks-org-id> --db-token <databricks-token> --db-url <databricks-url> --postgres-url <postgres-url> --version 0.4.1-alpha2
 
 EMR
-proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider emr  --aws-access-key-id <aws-access-key>>--aws-secret-access-key <aws-secret-key>  --emr-prophecy-jar-path <s3-prophecy-jarpath> --emr-log-uri <s3-log-uri> --emr-ec2-subnet-id <subnetid> --postgres-url <postgres-url> 
+proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider emr  --aws-access-key-id <aws-access-key>>--aws-secret-access-key <aws-secret-key>  --emr-prophecy-jar-path <s3-prophecy-jarpath> --emr-log-uri <s3-log-uri> --emr-ec2-subnet-id <subnetid> --postgres-url <postgres-url> --version 0.4.1-alpha2
 ```
 
 Creating a data plane is a long operation and one can track the status of operation with 'dataplane get' command. Please use below command to check the status of data plane creation:
