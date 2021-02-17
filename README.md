@@ -79,9 +79,9 @@ Download prophecy management CLI (ProCtl) and connect with ProService
    ```
    proctl -s <ProService IP Address> -p 443 -k
    ```
-{{<note>}}
-Contact Prophecy team for the links to the latest versions of Proctl and helm chart.
-{{</note>}}
+
+* Contact Prophecy team for the links to the latest versions of Proctl and helm chart.
+
 
 ### Customer 
 1. Create/Onboard a new customer in ProService using below command in proctl:
