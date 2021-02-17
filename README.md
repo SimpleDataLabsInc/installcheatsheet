@@ -1,8 +1,3 @@
----
-title: "Install Cheatsheet"
-draft: false
----
-
 This document lists down commands to bring up Prophecy setup quickly. We highly recommend to go over our architecture and detailed install instructions on our [install](https://docs.prophecy.io/deployment/install/) page.
 
 ### Setup ProService(ucp) using Helm
@@ -21,10 +16,10 @@ kubectl create secret generic ucp-tls-secret --from-file=tls.crt=server.crt --fr
 ```
 
 #### Setup Postgres instance with necessary database schemas
-* Run the `SQL` queries to create the user and databases needed for prophecy. User `sdl` expects the password to be *will share seperately*.
+* Run the `SQL` queries to create the user and databases needed for prophecy. User `sdl` expects a specific password (*will share seperately*).
 ```sql
 CREATE DATABASE prophecy;
-CREATE USER sdl WITH PASSWORD <will share seperately>;
+CREATE USER sdl WITH PASSWORD '******'; #will share seperately
 CREATE DATABASE exec;
 CREATE DATABASE gogs;
 CREATE DATABASE asp;
@@ -80,7 +75,7 @@ Download prophecy management CLI (ProCtl) and connect with ProService
    proctl -s <ProService IP Address> -p 443 -k
    ```
 
-* Contact Prophecy team for the links to the latest versions of Proctl and helm chart.
+*Contact Prophecy team for the links to the latest versions of Proctl and helm chart.*
 
 
 ### Customer 
@@ -122,10 +117,9 @@ AWS:
 proctl [<customer>] » cluster get aws -n <cluster-name> 
 ```
 
-{{<note>}}
-- Cluster add takes less than a minute to complete.
-- kubeconfig takes the absolute path to kubeconfig file on machine where proctl is running.
-{{</note>}}
+*Cluster add takes less than a minute to complete.*
+*kubeconfig takes the absolute path to kubeconfig file on machine where proctl is running.*
+
 
 ### Prophecy Platform
 Prophecy Platform is responsible for backup,restore,logs, metrics and auto-scaling for prophecy setup. Please run below command to create prophecy platform on a given k8s cluster.  
@@ -138,9 +132,8 @@ Creating a platform is a long operation and one can track the status of operatio
 ```
 proctl [<customer>] » platform get --cluster <cluster-name> 
 ```
-{{<note>}}
-Platform creation takes around 5 minutes to complete
-{{</note>}}
+*Platform creation takes around 5 minutes to complete.*
+
 
 ### Control Plane
 Control Plane represents one installation of Prophecy Application. Please run below command to create a prophecy control plane on a given k8s cluster. 
@@ -154,9 +147,8 @@ Creating a control plane is a long operation and one can track the status of ope
 ```
 proctl [<customer>] » controlplane get -t <controlplane-name>
 ```
-{{<note>}}
-Controlplane creation takes around 10 minutes to complete.
-{{</note>}}
+*Controlplane creation takes around 10 minutes to complete.*
+
 
 ### Data Plane
 Data Plane represent an execution environment such as test or production. Please run below command to create a prophecy data plane on a given k8s cluster for a given control plane.
@@ -173,7 +165,6 @@ Creating a data plane is a long operation and one can track the status of operat
 ```
 proctl [<customer>] » dataplane get -n <dataplane-name> -t <controlplane-name>
 ```
-{{<note>}}
-Data plane creation takes around 10 minutes to complete.
-{{</note>}}
+*Data plane creation takes around 10 minutes to complete.*
+
 
