@@ -54,9 +54,16 @@ postgres:
 ```
 
 #### Install `ucp` helm chart
+**note**
+- If you have installed the chart already, please uninstall it by running:
+    ```shell
+  helm uninstall -n ucp ucp
+    ```
+Install the helm chart for `ucp`.
 ```shell
 helm repo add prophecy http://simpledatalabsinc.github.io/prophecy/
-helm install ucp prophecy/ucp -f values.yaml -n ucp --version 0.0.1
+helm repo update
+helm install ucp prophecy/ucp -f values.yaml -n ucp --version 0.0.1-disney
 ```
 
 #### Find the ingress associated with ucp and add the domain to the DNS zone
@@ -109,7 +116,7 @@ As shown above, the shell prompt changes to `proctl [abc]` from `proctl`
 
 
 ```
-proctl [<customer>] » cluster add aws -n <cluster-name> --aws-access-key-id=<access-key-id> --aws-secret-access-key=<secret-access-key> --aws-efs-id=<efs-id> --aws-efs-name=<efs-name> --aws-region=<region> --kubeconfig <absolute path to kubeconfig file of cluster>
+proctl [<customer>] » cluster add aws -n <cluster-name> --aws-efs-id=<efs-id> --aws-efs-name=<efs-name> --aws-region=<region> --kubeconfig <absolute path to kubeconfig file of cluster>
 ```
 Please use below commands to check the status of cluster:
 ```
@@ -117,28 +124,38 @@ AWS:
 proctl [<customer>] » cluster get aws -n <cluster-name> 
 ```
 
-*Cluster add takes less than a minute to complete.*
-*kubeconfig takes the absolute path to kubeconfig file on machine where proctl is running.*
+
+**note**
+- Cluster add takes less than a minute to complete.
+- kubeconfig takes the absolute path to kubeconfig file on machine where proctl is running.
 
 
 ### Prophecy Platform
 Prophecy Platform is responsible for backup,restore,logs, metrics and auto-scaling for prophecy setup. Please run below command to create prophecy platform on a given k8s cluster.  
 
 ```
-proctl [<customer>] » platform create -n <platform-name> --cluster <cluster-name> --version 0.0.2
+proctl [<customer>] » platform create -n <platform-name> --cluster <cluster-name> --version 0.5.0-disney
 ```
 Creating a platform is a long operation and one can track the status of operation with 'platform get' command. Please use below command to check the status of platform creation:
 
+**note**
+- If you have already triggered a platform create, it would be prudent to delete the existing platform by running:
+```shell
+proctl [<customer>] » platform delete --cluster <cluster-name> 
+```
+To understand the status of platform creation, run:
 ```
 proctl [<customer>] » platform get --cluster <cluster-name> 
 ```
-*Platform creation takes around 5 minutes to complete.*
+
+**note**
+- Platform creation takes around 5 minutes to complete
 
 
 ### Control Plane
 Control Plane represents one installation of Prophecy Application. Please run below command to create a prophecy control plane on a given k8s cluster. 
 ```
-proctl [<customer>] » tenant create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url> --version 0.4.1-alpha2
+proctl [<customer>] » controlplane create -n <controlplane-name> --cluster <cluster-name> --fullname <controlplane-fullname> --email <controlplane-email> --postgres-url <postgres-url> --version 0.6.8-disney
 ```
 This command prompts for a password `<controlplane-password>`. This is a long operation and one can track the status of operation with 'controlplane get' command.
 Once the deployment status is shown as Deployed, the control plane is said to be deployed successfully.
@@ -147,17 +164,19 @@ Creating a control plane is a long operation and one can track the status of ope
 ```
 proctl [<customer>] » tenant get -t <controlplane-name>
 ```
-*Controlplane creation takes around 10 minutes to complete.*
+
+**note**
+- Controlplane creation takes around 10 minutes to complete.
 
 
 ### Data Plane
 Data Plane represent an execution environment such as test or production. Please run below command to create a prophecy data plane on a given k8s cluster for a given control plane.
 ```
 Databricks
-proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider databricks --db-org-id <databricks-org-id> --db-token <databricks-token> --db-url <databricks-url> --postgres-url <postgres-url> --version 0.4.1-alpha2
+proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider databricks --db-org-id <databricks-org-id> --db-token <databricks-token> --db-url <databricks-url> --postgres-url <postgres-url> --version 0.6.8-disney
 
 EMR
-proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider emr  --aws-access-key-id <aws-access-key>>--aws-secret-access-key <aws-secret-key>  --emr-prophecy-jar-path <s3-prophecy-jarpath> --emr-log-uri <s3-log-uri> --emr-ec2-subnet-id <subnetid> --postgres-url <postgres-url> --version 0.4.1-alpha2
+proctl [<customer>] » dataplane create -n <dataplane-name> -t <tenant-name> --cluster <cluster-name> --fabric-name <fabric-name> --spark-exec-provider emr  --aws-access-key-id <aws-access-key>>--aws-secret-access-key <aws-secret-key>  --emr-prophecy-jar-path <s3-prophecy-jarpath> --emr-log-uri <s3-log-uri> --emr-ec2-subnet-id <subnetid> --postgres-url <postgres-url> --version 0.6.8-disney 
 ```
 
 Creating a data plane is a long operation and one can track the status of operation with 'dataplane get' command. Please use below command to check the status of data plane creation:
@@ -165,6 +184,12 @@ Creating a data plane is a long operation and one can track the status of operat
 ```
 proctl [<customer>] » dataplane get -n <dataplane-name> -t <controlplane-name>
 ```
-*Data plane creation takes around 10 minutes to complete.*
 
+**note**
+- Data plane creation takes around 10 minutes to complete.
 
+### Data Plane Connect
+Once the dataplane has been successfully deployed, connect the dataplane to the controlplane by running:
+```shell
+proctl [<customer>] » dataplane connect -n <dataplane-name> -t <tenant-name>
+```
